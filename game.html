@@ -1,4 +1,6 @@
+# フォントサイズ32pxに変更した game.html を再生成する
 
+updated_game_html = """
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -37,7 +39,7 @@
       height: 100px;
       background-color: #6a0dad;
       color: white;
-      font-size: 24px;
+      font-size: 32px; /* フォントサイズを拡大 */
       font-weight: bold;
       display: flex;
       align-items: center;
@@ -65,3 +67,10 @@
   <div id="gameBoard"></div>
 </body>
 </html>
+"""
+
+# 保存パス
+html_path_updated = Path("/mnt/data/game_font32.html")
+html_path_updated.write_text(updated_game_html, encoding="utf-8")
+
+html_path_updated.name
