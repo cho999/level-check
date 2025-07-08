@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>文字レベルチェック</title>
+  <link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
+  <script src="levels.js" defer></script>
+  <script src="game.js" defer></script>
+  <style>
+    body {
+      font-family: 'Klee One', sans-serif;
+      background-color: #f8f8ff;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    #timer {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    #gameBoard {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #6a0dad;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .flipped {
+      background-color: #ffa;
+      color: #333;
+    }
+
+    .matched {
+      background-color: #ccc;
+      color: #666;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>文字レベルチェック（Lv1）</h1>
+  <div id="timer">残り時間: <span id="timeLeft">120</span> 秒</div>
+  <div id="gameBoard"></div>
+</body>
+</html>
