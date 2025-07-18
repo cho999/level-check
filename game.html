@@ -1,5 +1,6 @@
-# フォントサイズ32pxに変更した game.html を再生成する
+from pathlib import Path
 
+# HTMLコード（フォントサイズ32pxに変更済み）
 updated_game_html = """
 <!DOCTYPE html>
 <html lang="ja">
@@ -69,7 +70,7 @@ updated_game_html = """
 </html>
 """
 
-# 保存パス
+# ファイルとして保存
 html_path_updated = Path("/mnt/data/game_font32.html")
 html_path_updated.write_text(updated_game_html, encoding="utf-8")
 
