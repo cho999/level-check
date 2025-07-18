@@ -1,4 +1,3 @@
-
 // game.js
 
 let currentLevel = parseInt(new URLSearchParams(window.location.search).get("level") || "1");
@@ -40,7 +39,7 @@ cardItems.forEach((item, index) => {
   card.dataset.value = item.value;
   card.dataset.match = item.match;
   card.dataset.index = index;
-  card.textContent = "CHO"; // 裏面にCHO表示
+  card.textContent = "？";
   card.addEventListener("click", flipCard);
   gameBoard.appendChild(card);
 });
@@ -84,7 +83,7 @@ function checkMatch() {
         if (currentLevel < MAX_LEVEL) {
           nextLevel();
         } else {
-          endGame(true);
+          endGame(true); // 最終レベルクリア
         }
       }, 1000);
     }
@@ -93,8 +92,8 @@ function checkMatch() {
     setTimeout(() => {
       firstCard.classList.remove("flipped");
       secondCard.classList.remove("flipped");
-      firstCard.textContent = "CHO";
-      secondCard.textContent = "CHO";
+      firstCard.textContent = "？";
+      secondCard.textContent = "？";
       resetFlips();
     }, 800);
   }
@@ -111,6 +110,21 @@ function endGame(success) {
   localStorage.setItem("finalLevel", currentLevel);
   localStorage.setItem("matchCount", matchCount);
   localStorage.setItem("success", success ? "1" : "0");
+
+  // Google Sheets 送信
+  fetch("https://script.google.com/macros/s/AKfycbwHLsimh2w1KSAWPjIjox7Wz0m1P0cd8fXK3_9ek2lNrVM4-d6ielpfKTrk-BRTZ_ItZA/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      level: currentLevel,
+      score: matchCount,
+      ua: navigator.userAgent
+    })
+  });
+
   window.location.href = "gameover.html";
 }
 
