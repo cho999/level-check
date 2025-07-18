@@ -121,7 +121,7 @@ function endGame(success) {
     body: JSON.stringify({
       level: currentLevel,
       score: matchCount,
-      ua: navigator.userAgent
+      ua: navigator.userAgent,
     　lang: navigator.language
     })
   });
