@@ -122,6 +122,7 @@ function endGame(success) {
       level: currentLevel,
       score: matchCount,
       ua: navigator.userAgent
+    　lang: navigator.language
     })
   });
 
