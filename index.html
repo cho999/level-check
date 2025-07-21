@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>文字レベルチェック</title>
+  <title>Kana Level Check</title>
   <link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
   <style>
     body {
@@ -39,6 +39,12 @@
       color: #444;
       line-height: 1.6;
     }
+
+    .notice {
+      font-size: 12px;
+      color: #888;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -48,12 +54,14 @@
     Challenge all 7 levels, from Hiragana to Katakana and Kanji!
   </div>
   <button class="start-button" onclick="startGame()">Start</button>
+  <div class="notice">
+    * We record your browser language and device info for research purposes only.
+  </div>
 
   <script>
     function startGame() {
-      window.location.href = "game.html?level=1"; // Always start from Level 1
+      window.location.href = "game.html?level=1";
     }
   </script>
 </body>
 </html>
-
