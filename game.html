@@ -44,17 +44,36 @@
       border-radius: 5px;
       cursor: pointer;
       user-select: none;
+      position: relative;
     }
 
-    .flipped {
+    .card.flipped {
       background-color: #ffa;
       color: #333;
     }
 
-    .matched {
+    .card.matched {
       background-color: #ccc;
       color: #666;
       pointer-events: none;
+    }
+
+    /* 裏面にDPUを表示 */
+    .card::before {
+      content: "DPU";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 拗音用に小さめ */
+    .small-font {
+      font-size: 50px !important;
     }
   </style>
 </head>
