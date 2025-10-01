@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>文字レベルチェック - 結果</title>
+  <title>HiraKana Check up - Result</title>
   <link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
   <style>
     body {
@@ -23,6 +23,7 @@
       padding: 20px;
       border-radius: 15px;
       display: inline-block;
+      text-align: left;
     }
 
     .button {
@@ -38,18 +39,19 @@
   </style>
 </head>
 <body>
-  <h1>🧠 結果発表</h1>
+  <h1>🧠 Result</h1>
   <div class="result-box">
-    <p>到達レベル：<strong>Lv<span id="finalLevel">?</span></strong></p>
-    <p>最後のレベルでマッチできたペア：<strong><span id="matchCount">?</span> / 10</strong></p>
+    <p><strong>Final Level:</strong> Lv<span id="finalLevel">?</span></p>
+    <p><strong>Pairs matched:</strong> <span id="matchCount">?</span> / 10</p>
     <hr>
-    <p id="levelBreakdown" style="font-size: 16px; margin-top: 10px; text-align: left;"></p>
+    <p id="levelBreakdown" style="font-size: 16px; margin-top: 10px;"></p>
     <hr>
-    <p><strong>🔍 推定習得レベル：</strong></p>
+    <p><strong>Analysis:</strong></p>
     <p id="analysis"></p>
+    <p style="margin-top:20px; font-size:18px; color:#d2691e;" id="encourage"></p>
   </div>
 
-  <button class="button" onclick="goHome()">トップに戻る</button>
+  <button class="button" onclick="goHome()">Back to Title</button>
 
   <script>
     const finalLevel = parseInt(localStorage.getItem("finalLevel")) || 1;
@@ -59,42 +61,49 @@
     document.getElementById("finalLevel").textContent = finalLevel;
     document.getElementById("matchCount").textContent = matchCount;
 
-    // Level1〜4 のみに修正
+    // Level sizes and labels (1–4 only)
     const levelSizes = {
-      1: 46, // ひらがな清音
-      2: 45, // カタカナ清音（ヲ削除後）
-      3: 40, // ひらがな濁音＋拗音（ぢ/づ削除後）
-      4: 40  // カタカナ濁音＋拗音（ヂ/ヅ削除後）
+      1: 46,
+      2: 45,
+      3: 40,
+      4: 40
     };
 
     const levelLabels = {
-      1: "ひらがな清音",
-      2: "カタカナ清音",
-      3: "ひらがな濁音＋拗音",
-      4: "カタカナ濁音＋拗音"
+      1: "Hiragana Basic",
+      2: "Katakana Basic",
+      3: "Hiragana Dakuten + Yoon",
+      4: "Katakana Dakuten + Yoon"
     };
 
     let detailsText = "";
     for (let i = 1; i <= finalLevel; i++) {
-      const label = levelLabels[i] || "未定義";
+      const label = levelLabels[i] || "Undefined";
       const size = levelSizes[i] || "?";
-      detailsText += `Lv${i}：${label}（${size} Letters）<br>`;
+      detailsText += `Lv${i}: ${label} (${size} characters)<br>`;
     }
 
     document.getElementById("levelBreakdown").innerHTML = detailsText;
 
     let message = "";
+    let encourage = "";
+
     if (success) {
-      message = "🎉 おめでとうございます！全4レベル完全制覇です！";
+      message = "🎉 Congratulations! You cleared all 4 levels!";
+      encourage = "ぜんぶできました！すごい！";
     } else if (matchCount >= 8) {
-      message = `Lv${finalLevel} をあと一歩でクリアできました。すごい集中力です！`;
+      message = `Almost there! You nearly cleared Lv${finalLevel}.`;
+      encourage = "あとすこし！";
     } else if (matchCount >= 4) {
-      message = `Lv${finalLevel} の半分はマスター済み。次は完全クリアを目指そう！`;
+      message = `Good effort! You completed half of Lv${finalLevel}.`;
+      encourage = "がんばりました！";
     } else {
-      message = `Lv${finalLevel} はこれからの伸びしろ大。まずは復習して再挑戦！`;
+      message = `Don't give up! Lv${finalLevel} still has room to improve.`;
+      encourage = "つぎもがんばろう！";
     }
 
     document.getElementById("analysis").textContent = message;
+    document.getElementById("encourage").textContent = encourage;
 
     function goHome() {
       window.location.href = "index.html";
