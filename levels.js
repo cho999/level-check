@@ -1,73 +1,161 @@
-// levels.js（修正版）
-// レベル構成を 1〜4 のみに変更
-// Level1: ひらがな清音
-// Level2: カタカナ清音
-// Level3: ひらがな濁音＋拗音
-// Level4: カタカナ濁音＋拗音
-// levels.js（ぢ/ヂ/づ/ヅ/Di/Du/ヲ を削除済）
+// game.js
 
-const level1 = [
-  { q: "a", a: "あ" }, { q: "i", a: "い" }, { q: "u", a: "う" }, { q: "e", a: "え" }, { q: "o", a: "お" },
-  { q: "ka", a: "か" }, { q: "ki", a: "き" }, { q: "ku", a: "く" }, { q: "ke", a: "け" }, { q: "ko", a: "こ" },
-  { q: "sa", a: "さ" }, { q: "shi", a: "し" }, { q: "su", a: "す" }, { q: "se", a: "せ" }, { q: "so", a: "そ" },
-  { q: "ta", a: "た" }, { q: "chi", a: "ち" }, { q: "tsu", a: "つ" }, { q: "te", a: "て" }, { q: "to", a: "と" },
-  { q: "na", a: "な" }, { q: "ni", a: "に" }, { q: "nu", a: "ぬ" }, { q: "ne", a: "ね" }, { q: "no", a: "の" },
-  { q: "ha", a: "は" }, { q: "hi", a: "ひ" }, { q: "fu", a: "ふ" }, { q: "he", a: "へ" }, { q: "ho", a: "ほ" },
-  { q: "ma", a: "ま" }, { q: "mi", a: "み" }, { q: "mu", a: "む" }, { q: "me", a: "め" }, { q: "mo", a: "も" },
-  { q: "ya", a: "や" }, { q: "yu", a: "ゆ" }, { q: "yo", a: "よ" },
-  { q: "ra", a: "ら" }, { q: "ri", a: "り" }, { q: "ru", a: "る" }, { q: "re", a: "れ" }, { q: "ro", a: "ろ" },
-  { q: "wa", a: "わ" }, { q: "n", a: "ん" }
-];
+let currentLevel = parseInt(new URLSearchParams(window.location.search).get("level") || "1");
+document.querySelector("h1").textContent = `文字レベルチェック（Lv${currentLevel}）`;
 
-const level2 = [
-  { q: "a", a: "ア" }, { q: "i", a: "イ" }, { q: "u", a: "ウ" }, { q: "e", a: "エ" }, { q: "o", a: "オ" },
-  { q: "ka", a: "カ" }, { q: "ki", a: "キ" }, { q: "ku", a: "ク" }, { q: "ke", a: "ケ" }, { q: "ko", a: "コ" },
-  { q: "sa", a: "サ" }, { q: "shi", a: "シ" }, { q: "su", a: "ス" }, { q: "se", a: "セ" }, { q: "so", a: "ソ" },
-  { q: "ta", a: "タ" }, { q: "chi", a: "チ" }, { q: "tsu", a: "ツ" }, { q: "te", a: "テ" }, { q: "to", a: "ト" },
-  { q: "na", a: "ナ" }, { q: "ni", a: "ニ" }, { q: "nu", a: "ヌ" }, { q: "ne", a: "ネ" }, { q: "no", a: "ノ" },
-  { q: "ha", a: "ハ" }, { q: "hi", a: "ヒ" }, { q: "fu", a: "フ" }, { q: "he", a: "ヘ" }, { q: "ho", a: "ホ" },
-  { q: "ma", a: "マ" }, { q: "mi", a: "ミ" }, { q: "mu", a: "ム" }, { q: "me", a: "メ" }, { q: "mo", a: "モ" },
-  { q: "ya", a: "ヤ" }, { q: "yu", a: "ユ" }, { q: "yo", a: "ヨ" },
-  { q: "ra", a: "ラ" }, { q: "ri", a: "リ" }, { q: "ru", a: "ル" }, { q: "re", a: "レ" }, { q: "ro", a: "ロ" },
-  { q: "wa", a: "ワ" }, { q: "n", a: "ン" }
-];
+const MAX_LEVEL = 4;   // ← 4に変更
+const PAIR_COUNT = 10;
+const TIME_LIMIT = 120;
 
-const level3 = [
-  { q: "ga", a: "が" }, { q: "gi", a: "ぎ" }, { q: "gu", a: "ぐ" }, { q: "ge", a: "げ" }, { q: "go", a: "ご" },
-  { q: "za", a: "ざ" }, { q: "ji", a: "じ" }, { q: "zu", a: "ず" }, { q: "ze", a: "ぜ" }, { q: "zo", a: "ぞ" },
-  { q: "da", a: "だ" }, { q: "de", a: "で" }, { q: "do", a: "ど" },
-  { q: "ba", a: "ば" }, { q: "bi", a: "び" }, { q: "bu", a: "ぶ" }, { q: "be", a: "べ" }, { q: "bo", a: "ぼ" },
-  { q: "pa", a: "ぱ" }, { q: "pi", a: "ぴ" }, { q: "pu", a: "ぷ" }, { q: "pe", a: "ぺ" }, { q: "po", a: "ぽ" },
-  { q: "kya", a: "きゃ" }, { q: "kyu", a: "きゅ" }, { q: "kyo", a: "きょ" },
-  { q: "sha", a: "しゃ" }, { q: "shu", a: "しゅ" }, { q: "sho", a: "しょ" },
-  { q: "cha", a: "ちゃ" }, { q: "chu", a: "ちゅ" }, { q: "cho", a: "ちょ" },
-  { q: "nya", a: "にゃ" }, { q: "nyu", a: "にゅ" }, { q: "nyo", a: "にょ" },
-  { q: "hya", a: "ひゃ" }, { q: "hyu", a: "ひゅ" }, { q: "hyo", a: "ひょ" },
-  { q: "mya", a: "みゃ" }, { q: "myu", a: "みゅ" }, { q: "myo", a: "みょ" },
-  { q: "rya", a: "りゃ" }, { q: "ryu", a: "りゅ" }, { q: "ryo", a: "りょ" }
-];
+let timeLeft = TIME_LIMIT;
+let timerInterval;
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let matchCount = 0;
 
-const level4 = [
-  { q: "ga", a: "ガ" }, { q: "gi", a: "ギ" }, { q: "gu", a: "グ" }, { q: "ge", a: "ゲ" }, { q: "go", a: "ゴ" },
-  { q: "za", a: "ザ" }, { q: "ji", a: "ジ" }, { q: "zu", a: "ズ" }, { q: "ze", a: "ゼ" }, { q: "zo", a: "ゾ" },
-  { q: "da", a: "ダ" }, { q: "de", a: "デ" }, { q: "do", a: "ド" },
-  { q: "ba", a: "バ" }, { q: "bi", a: "ビ" }, { q: "bu", a: "ブ" }, { q: "be", a: "ベ" }, { q: "bo", a: "ボ" },
-  { q: "pa", a: "パ" }, { q: "pi", a: "ピ" }, { q: "pu", a: "プ" }, { q: "pe", a: "ペ" }, { q: "po", a: "ポ" },
-  { q: "kya", a: "キャ" }, { q: "kyu", a: "キュ" }, { q: "kyo", a: "キョ" },
-  { q: "sha", a: "シャ" }, { q: "shu", a: "シュ" }, { q: "sho", a: "ショ" },
-  { q: "cha", a: "チャ" }, { q: "chu", a: "チュ" }, { q: "cho", a: "チョ" },
-  { q: "nya", a: "ニャ" }, { q: "nyu", a: "ニュ" }, { q: "nyo", a: "ニョ" },
-  { q: "hya", a: "ヒャ" }, { q: "hyu", a: "ヒュ" }, { q: "hyo", a: "ヒョ" },
-  { q: "mya", a: "ミャ" }, { q: "myu", a: "ミュ" }, { q: "myo", a: "ミョ" },
-  { q: "rya", a: "リャ" }, { q: "ryu", a: "リュ" }, { q: "ryo", a: "リョ" }
-];
+const gameBoard = document.getElementById("gameBoard");
+const timerDisplay = document.getElementById("timeLeft");
 
-function getLevelQuestions(level) {
-  switch (parseInt(level)) {
-    case 1: return level1;
-    case 2: return level2;
-    case 3: return level3;
-    case 4: return level4;
-    default: return [];
+// 出題ペアを取得
+const allPairs = getLevelQuestions(currentLevel);
+if (allPairs.length < PAIR_COUNT) {
+  alert("このレベルの問題が不足しています。");
+  window.location.href = "index.html";
+}
+
+// --- 拗音と濁音を分けてサンプリング（Lv3/Lv4のみ適用） ---
+let selectedPairs = [];
+if (currentLevel === 3 || currentLevel === 4) {
+  const yoon = allPairs.filter(pair => pair.q.length >= 3); // ローマ字3文字以上＝拗音
+  const dakuon = allPairs.filter(pair => pair.q.length < 3);
+
+  const dakuonSample = shuffleArray(dakuon).slice(0, Math.floor(PAIR_COUNT * 2 / 3));
+  const yoonSample   = shuffleArray(yoon).slice(0, Math.ceil(PAIR_COUNT / 3));
+  selectedPairs = [...dakuonSample, ...yoonSample];
+} else {
+  selectedPairs = shuffleArray(allPairs).slice(0, PAIR_COUNT);
+}
+
+// --- カード生成 ---
+let cardItems = [];
+selectedPairs.forEach(pair => {
+  cardItems.push({ type: "romaji", value: pair.q, match: pair.a });
+  cardItems.push({ type: "kana", value: pair.a, match: pair.q });
+});
+
+cardItems = shuffleArray(cardItems);
+
+cardItems.forEach((item, index) => {
+  const card = document.createElement("div");
+  card.classList.add("card");
+  card.dataset.value = item.value;
+  card.dataset.match = item.match;
+  card.dataset.index = index;
+  card.textContent = "？";
+
+  // 拗音ならフォント小さめ
+  if (item.value.length >= 3) {
+    card.classList.add("small-font");
   }
+
+  card.addEventListener("click", flipCard);
+  gameBoard.appendChild(card);
+});
+
+// --- タイマー ---
+timerInterval = setInterval(() => {
+  timeLeft--;
+  timerDisplay.textContent = timeLeft;
+  if (timeLeft <= 0) {
+    endGame(false);
+  }
+}, 1000);
+
+function flipCard(e) {
+  if (lockBoard) return;
+  const clicked = e.currentTarget;
+  if (clicked.classList.contains("flipped") || clicked.classList.contains("matched")) return;
+
+  clicked.classList.add("flipped");
+  clicked.textContent = clicked.dataset.value;
+
+  if (!firstCard) {
+    firstCard = clicked;
+  } else {
+    secondCard = clicked;
+    checkMatch();
+  }
+}
+
+function checkMatch() {
+  const isMatch = firstCard.dataset.match === secondCard.dataset.value;
+
+  if (isMatch) {
+    firstCard.classList.add("matched");
+    secondCard.classList.add("matched");
+    matchCount++;
+    resetFlips();
+
+    if (matchCount === PAIR_COUNT) {
+      clearInterval(timerInterval);
+      setTimeout(() => {
+        if (currentLevel < MAX_LEVEL) {
+          nextLevel();
+        } else {
+          endGame(true); // 最終レベルクリア
+        }
+      }, 1000);
+    }
+  } else {
+    lockBoard = true;
+    setTimeout(() => {
+      firstCard.classList.remove("flipped");
+      secondCard.classList.remove("flipped");
+      firstCard.textContent = "？";
+      secondCard.textContent = "？";
+      resetFlips();
+    }, 800);
+  }
+}
+
+function resetFlips() {
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+}
+
+function endGame(success) {
+  clearInterval(timerInterval);
+  localStorage.setItem("finalLevel", currentLevel);
+  localStorage.setItem("matchCount", matchCount);
+  localStorage.setItem("success", success ? "1" : "0");
+
+  // Google Sheets 送信
+  fetch("https://script.google.com/macros/s/AKfycbwHLsimh2w1KSAWPjIjox7Wz0m1P0cd8fXK3_9ek2lNrVM4-d6ielpfKTrk-BRTZ_ItZA/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      level: currentLevel,
+      score: matchCount,
+      ua: navigator.userAgent,
+      lang: navigator.language
+    })
+  });
+
+  window.location.href = "gameover.html";
+}
+
+function nextLevel() {
+  window.location.href = `game.html?level=${currentLevel + 1}`;
+}
+
+function shuffleArray(array) {
+  return array
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
 }
