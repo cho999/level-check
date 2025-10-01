@@ -45,7 +45,7 @@
       cursor: pointer;
       user-select: none;
       position: relative;
-      overflow: hidden; /* 裏面DPUを収める */
+      overflow: hidden;
     }
 
     .card.flipped {
@@ -69,14 +69,14 @@
       font-size: 42px;
       font-weight: 900;
       letter-spacing: 2px;
-      color: rgba(255, 255, 255, 0.28);
+      color: rgba(255, 255, 255, 0.25);
       pointer-events: none;
-      z-index: 1;
+      z-index: 0; /* 背面に配置 */
     }
 
-    /* カードをめくった時（淡色背景でも視認できるよう調整） */
+    /* カードをめくったら非表示 */
     .card.flipped::before {
-      color: rgba(0, 0, 0, 0.12);
+      display: none;
     }
 
     /* 拗音用に小さめフォント */
