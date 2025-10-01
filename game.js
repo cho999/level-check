@@ -3,7 +3,7 @@
 let currentLevel = parseInt(new URLSearchParams(window.location.search).get("level") || "1");
 document.querySelector("h1").textContent = `文字レベルチェック（Lv${currentLevel}）`;
 
-const MAX_LEVEL = 7;
+const MAX_LEVEL = 4;   // ← 7から4に変更
 const PAIR_COUNT = 10;
 const TIME_LIMIT = 120;
 
@@ -17,14 +17,37 @@ let matchCount = 0;
 const gameBoard = document.getElementById("gameBoard");
 const timerDisplay = document.getElementById("timeLeft");
 
+// 出題ペアを取得
 const allPairs = getLevelQuestions(currentLevel);
 if (allPairs.length < PAIR_COUNT) {
   alert("このレベルの問題が不足しています。");
   window.location.href = "index.html";
 }
 
-const selectedPairs = shuffleArray(allPairs).slice(0, PAIR_COUNT);
+// --- 拗音と濁音を分けてサンプリング（Lv3/Lv4のみ適用） ---
+let selectedPairs = [];
+if (currentLevel === 3 || currentLevel === 4) {
+  // 「ゃ」「ゅ」「ょ」「ャ」「ュ」「ョ」を含むかな＝拗音と判定
+  const yoon = allPairs.filter(pair => /ゃ|ゅ|ょ|ャ|ュ|ョ/.test(pair.a));
+  const dakuon = allPairs.filter(pair => !/ゃ|ゅ|ょ|ャ|ュ|ョ/.test(pair.a));
 
+  const dakuonTarget = Math.floor(PAIR_COUNT * 2 / 3); // 濁音 2/3
+  const yoonTarget   = PAIR_COUNT - dakuonTarget;      // 拗音 1/3
+
+  const dakuonSample = shuffleArray(dakuon).slice(0, dakuonTarget);
+  const yoonSample   = shuffleArray(yoon).slice(0, yoonTarget);
+
+  selectedPairs = [...dakuonSample, ...yoonSample];
+
+  // 足りない場合は濁音で補充
+  while (selectedPairs.length < PAIR_COUNT && dakuon.length > selectedPairs.length) {
+    selectedPairs.push(dakuon[selectedPairs.length]);
+  }
+} else {
+  selectedPairs = shuffleArray(allPairs).slice(0, PAIR_COUNT);
+}
+
+// --- カード生成 ---
 let cardItems = [];
 selectedPairs.forEach(pair => {
   cardItems.push({ type: "romaji", value: pair.q, match: pair.a });
@@ -40,10 +63,17 @@ cardItems.forEach((item, index) => {
   card.dataset.match = item.match;
   card.dataset.index = index;
   card.textContent = "？";
+
+  // 拗音ならフォント小さめ
+  if (item.value.length >= 3 || /ゃ|ゅ|ょ|ャ|ュ|ョ/.test(item.value)) {
+    card.classList.add("small-font");
+  }
+
   card.addEventListener("click", flipCard);
   gameBoard.appendChild(card);
 });
 
+// --- タイマー ---
 timerInterval = setInterval(() => {
   timeLeft--;
   timerDisplay.textContent = timeLeft;
