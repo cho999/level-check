@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Kana Level Check</title>
+  <title>ひらカナ Check up</title>
   <style>
     body {
       font-family: "Klee One", "Noto Sans JP", sans-serif;
@@ -11,40 +11,36 @@
       margin: 0;
       padding: 0;
     }
-
     .title-screen {
-      margin-top: 100px;
+      margin-top: 120px;
     }
-
-    .buttons button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 1.2em;
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
     }
-
+    p {
+      font-size: 20px;
+      color: #333;
+    }
     footer {
-      margin-top: 60px;
-      font-size: 0.9em;
+      margin-top: 100px;
+      font-size: 0.85em;
       color: #555;
     }
   </style>
 </head>
 <body>
   <div class="title-screen">
-    <h1>Kana Level Check</h1>
-    <p>レベルを選んでください</p>
-    <div class="buttons">
-      <button onclick="startGame(1)">Level 1 (ひらがな)</button>
-      <button onclick="startGame(2)">Level 2 (カタカナ)</button>
-      <button onclick="startGame(3)">Level 3 (ひらがな濁音+拗音)</button>
-      <button onclick="startGame(4)">Level 4 (カタカナ濁音+拗音)</button>
-    </div>
+    <h1>ひらカナ Check up</h1>
+    <p>
+      This site is for checking and practicing<br>
+      your Hiragana and Katakana levels.
+    </p>
   </div>
 
   <footer>
-    © Aj. Tsuratatsu Cho
+    © Aj. Tsuratatsu Cho <br>
+    This site collects personal data (e.g., scores, browser information) for educational purposes only.
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
