@@ -21,6 +21,19 @@
     p {
       font-size: 20px;
       color: #333;
+      margin-bottom: 40px;
+    }
+    .button {
+      font-size: 22px;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      background-color: #6a0dad;
+      color: white;
+      cursor: pointer;
+    }
+    .button:hover {
+      background-color: #5a0099;
     }
     footer {
       margin-top: 100px;
@@ -28,14 +41,18 @@
       color: #555;
     }
   </style>
+  <script>
+    function startGame() {
+      // Start from Level 1
+      window.location.href = "game.html?level=1";
+    }
+  </script>
 </head>
 <body>
   <div class="title-screen">
     <h1>ひらカナ Check up</h1>
-    <p>
-      This site is for checking and practicing<br>
-      your Hiragana and Katakana levels.
-    </p>
+    <p>This site is for checking and practicing your<br>Hiragana and Katakana levels.</p>
+    <button class="button" onclick="startGame()">Start</button>
   </div>
 
   <footer>
