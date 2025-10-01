@@ -30,8 +30,8 @@ if (currentLevel === 3 || currentLevel === 4) {
   const yoon = allPairs.filter(pair => /ゃ|ゅ|ょ|ャ|ュ|ョ/.test(pair.a));
   const dakuon = allPairs.filter(pair => !/ゃ|ゅ|ょ|ャ|ュ|ョ/.test(pair.a));
 
-  const dakuonTarget = Math.floor(PAIR_COUNT * 2 / 3);
-  const yoonTarget   = PAIR_COUNT - dakuonTarget;
+  const dakuonTarget = Math.floor(PAIR_COUNT * 2 / 3); // 濁音 2/3
+  const yoonTarget   = PAIR_COUNT - dakuonTarget;      // 拗音 1/3
 
   const dakuonSample = shuffleArray(dakuon).slice(0, dakuonTarget);
   const yoonSample   = shuffleArray(yoon).slice(0, yoonTarget);
@@ -39,7 +39,7 @@ if (currentLevel === 3 || currentLevel === 4) {
   selectedPairs = [...dakuonSample, ...yoonSample];
 
   // 足りなければ濁音で補充
-  while (selectedPairs.length < PAIR_COUNT && dakuon.length > selectedPairs.length) {
+  while (selectedPairs.length < PAIR_COUNT && dakuon[selectedPairs.length]) {
     selectedPairs.push(dakuon[selectedPairs.length]);
   }
 } else {
@@ -61,9 +61,9 @@ cardItems.forEach((item, index) => {
   card.dataset.value = item.value;
   card.dataset.match = item.match;
   card.dataset.index = index;
-  card.textContent = "？";
+  card.textContent = "？"; // 裏面
 
-  // 拗音ならフォント小さめ
+  // 拗音ならクラス付与（CSSで flipped の時だけ縮小される）
   if (item.value.length >= 3 || /ゃ|ゅ|ょ|ャ|ュ|ョ/.test(item.value)) {
     card.classList.add("small-font");
   }
@@ -87,7 +87,7 @@ function flipCard(e) {
   if (clicked.classList.contains("flipped") || clicked.classList.contains("matched")) return;
 
   clicked.classList.add("flipped");
-  clicked.textContent = clicked.dataset.value;
+  clicked.textContent = clicked.dataset.value; // 表（文字）
 
   if (!firstCard) {
     firstCard = clicked;
@@ -121,7 +121,7 @@ function checkMatch() {
     setTimeout(() => {
       firstCard.classList.remove("flipped");
       secondCard.classList.remove("flipped");
-      firstCard.textContent = "？";
+      firstCard.textContent = "？";  // 裏面に戻す（大きいフォント）
       secondCard.textContent = "？";
       resetFlips();
     }, 800);
@@ -144,9 +144,7 @@ function endGame(success) {
   fetch("https://script.google.com/macros/s/AKfycbwHLsimh2w1KSAWPjIjox7Wz0m1P0cd8fXK3_9ek2lNrVM4-d6ielpfKTrk-BRTZ_ItZA/exec", {
     method: "POST",
     mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       level: currentLevel,
       score: matchCount,
