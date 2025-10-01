@@ -45,6 +45,7 @@
       cursor: pointer;
       user-select: none;
       position: relative;
+      overflow: hidden; /* 裏面DPUを収める */
     }
 
     .card.flipped {
@@ -58,20 +59,27 @@
       pointer-events: none;
     }
 
-    /* 裏面にDPUを表示 */
+    /* 裏面ウォーターマーク「DPU」 */
     .card::before {
       content: "DPU";
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-      color: rgba(255, 255, 255, 0.15);
+      transform: translate(-50%, -50%) rotate(-15deg);
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.28);
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
     }
 
-    /* 拗音用に小さめ */
+    /* カードをめくった時（淡色背景でも視認できるよう調整） */
+    .card.flipped::before {
+      color: rgba(0, 0, 0, 0.12);
+    }
+
+    /* 拗音用に小さめフォント */
     .small-font {
       font-size: 50px !important;
     }
